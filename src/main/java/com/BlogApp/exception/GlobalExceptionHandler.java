@@ -15,8 +15,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     public static final HttpStatus http = HttpStatus.NOT_FOUND;
-@ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> userNotFoundHandle(UserNotFoundException userNotFoundException){
+@ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> userNotFoundHandle(ResourceNotFoundException userNotFoundException){
     ErrorResponse errorResponse = new ErrorResponse(userNotFoundException.getMessage(), http, LocalDateTime.now());
     return new ResponseEntity<>(errorResponse,http);
     }
