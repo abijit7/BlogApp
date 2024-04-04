@@ -4,6 +4,7 @@ import com.BlogApp.entity.User;
 import com.BlogApp.payload.ApiResponse;
 import com.BlogApp.payload.UserDto;
 import com.BlogApp.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,15 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "User")
 public class UserController {
 private final UserService userService;
-@GetMapping("/allUser")
+@GetMapping("/all-user")
 public ResponseEntity<List<UserDto>> findAllUser(){
     List<UserDto> user = this.userService.findAllUser();
     return new ResponseEntity<>(user, HttpStatus.OK);
 }
-@PostMapping("/addUser")
+@PostMapping("/add-user")
 public ResponseEntity<UserDto> createUser( @Valid @RequestBody UserDto userDto){
     UserDto user = this.userService.createUser(userDto);
     return new ResponseEntity<>(user,HttpStatus.CREATED);

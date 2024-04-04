@@ -26,5 +26,4 @@ public class Category {
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Post> posts;
-
 }

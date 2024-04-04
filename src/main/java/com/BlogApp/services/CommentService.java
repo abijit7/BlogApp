@@ -1,8 +1,11 @@
 package com.BlogApp.services;
 
 import com.BlogApp.payload.CommentDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 
 public interface CommentService {
 List<CommentDto> getComment(Long postId);

@@ -2,6 +2,7 @@ package com.BlogApp.services;
 
 import com.BlogApp.payload.PostDto;
 import com.BlogApp.payload.PostResponse;
+import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
 import java.util.List;

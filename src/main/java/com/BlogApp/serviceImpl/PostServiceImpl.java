@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
         Page<Post> pages= this.postRepo.findAll(pageable);
         List<Post> postList= pages.getContent();
          List<PostDto> content = postList.stream().map((post) ->
-                this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+                 this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
          PostResponse postResponse = new PostResponse();
          postResponse.setPostList(content);
          postResponse.setPageNumber(pages.getNumber());

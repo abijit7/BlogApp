@@ -1,11 +1,11 @@
 package com.BlogApp.payload;
 
-import com.BlogApp.entity.Category;
-import com.BlogApp.entity.User;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,11 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 public class PostDto {
     private Long id;
+    @NotEmpty(message = "Post title should not be empty")
     private String postTitle;
+    @NotEmpty(message = "post content should not be empty")
     private String postContent;
     private String imageUrl;
     private UserDto user;
     private CategoryDto category;
-    private List<CommentDto> commentList;
+    private List<CommentDto> commentList = new ArrayList<>();
 }
 

@@ -7,7 +7,9 @@ import com.BlogApp.payload.PostDto;
 import com.BlogApp.payload.PostResponse;
 import com.BlogApp.services.FileService;
 import com.BlogApp.services.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -26,12 +28,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/post")
+@Tag(name = "Post")
 public class PostController {
     private final PostService postService;
     private final FileService fileService;
     @Value("${project.image}")
     private  String path;
-@GetMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber" , defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
                                                    @RequestParam(value = "pageSize" , defaultValue = AppConstants.PAGE_SIZE , required = false) Integer pageSize){
         PostResponse getPost = this.postService.getAllPost(pageNumber,pageSize);
@@ -48,8 +51,7 @@ public class PostController {
     return new ResponseEntity<>(getByCategory,HttpStatus.OK);
     }
     @GetMapping("/user/id/{id}")
-    public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable("id") Long userId){
-        List<PostDto> getByUser = this.postService.findPostByUser(userId);
+    public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable("id") Long userId){List<PostDto> getByUser = this.postService.findPostByUser(userId);
         return new ResponseEntity<>(getByUser,HttpStatus.OK);
     }
     @GetMapping("/id/{id}")
@@ -58,12 +60,15 @@ public class PostController {
         return new ResponseEntity<>(getPost, HttpStatus.OK);
     }
     @PostMapping("/add/user-id/{user-id}/category-id/{category-id}")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,@PathVariable("user-id")Long userId,@PathVariable("category-id") Long categoryId){
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto,
+                                              @PathVariable("user-id")Long userId,
+                                              @PathVariable("category-id") Long categoryId){
     PostDto createPost = this.postService.createPost(postDto,userId,categoryId);
     return new ResponseEntity<>(createPost,HttpStatus.CREATED);
     }
     @PutMapping("/update/id/{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable("id") Long postId){
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,
+                                                  @PathVariable("id") Long postId){
     PostDto updatePost = this.postService.updatePost(postId,postDto);
     return new ResponseEntity<>(postDto,HttpStatus.OK);
     }
@@ -74,7 +79,7 @@ public class PostController {
     }
     @PostMapping("/image/upload/id/{id}")
     public ResponseEntity<PostDto> uploadPostImage(@RequestParam("image")MultipartFile multipartFile,
-                                                         @PathVariable("id") Long postId) throws IOException {
+                                                   @PathVariable("id") Long postId) throws IOException {
         PostDto postById = this.postService.getPostById(postId);
          String fileName = this.fileService.uploadImage(path, multipartFile);
          postById.setImageUrl(fileName);
@@ -83,9 +88,9 @@ public class PostController {
     }
     @GetMapping(value = "/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
     public void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response) throws IOException {
-        InputStream resourse = this.fileService.getResource(path,imageName);
+        InputStream resource = this.fileService.getResource(path,imageName);
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        StreamUtils.copy(resourse,response.getOutputStream());
+        StreamUtils.copy(resource,response.getOutputStream());
 
     }
 

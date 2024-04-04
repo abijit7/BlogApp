@@ -1,6 +1,7 @@
 package com.BlogApp.services;
 
 import com.BlogApp.payload.CategoryDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
